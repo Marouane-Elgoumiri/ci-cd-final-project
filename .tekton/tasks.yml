@@ -42,7 +42,7 @@ kind: Task
 metadata:
   name: nose
 spec: 
-  workplace:
+  workplaces:
     - name: source
   params:
     - name: args
@@ -52,7 +52,7 @@ spec:
   steps:
     - name: nosetests
       image: python:3.9-slim
-      workingDir: $(workplaces.source.path)
+      workingDir: $(workspaces.source.path)
       script: |
          set -e
           python -m pip install --upgrade pip wheel
