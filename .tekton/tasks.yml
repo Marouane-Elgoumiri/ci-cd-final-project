@@ -48,8 +48,8 @@ spec:
   params:
     - name: args
       description: Arguments to pass to nose
-      type: array
-      default: ["-v"]
+      type: string
+      default: "-v"
   steps:
     - name: nosetests
       image: python:3.9-slim
@@ -58,4 +58,4 @@ spec:
         set -e
         python -m pip install --upgrade pip wheel
         pip install -r requirements.txt
-        nosetests "$(params.args)"
+        nosetests $(params.args)
