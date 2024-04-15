@@ -1,15 +1,14 @@
----
-  apiVersion: tekton.dev/v1beta1
-  kind: Task
-  metadata: 
-    name: cleanup
-  spec:
-    description: This task will clean up a workspace by deleting all the files.
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: cleanup
+spec:
+  description: This task will clean up a workspace by deleting all the files.
   workspaces:
     - name: source
   params:
     - name: args
-      decription: Arguments to pass to nose
+      description: Arguments to pass to nose
   steps:
     - name: remove
       image: alpine:3
@@ -36,25 +35,27 @@
           # Delete files and directories starting with .. plus any other character
           rm -rf "${WORKSPACE_SOURCE_PATH}"/..?*
         fi
+
 ---
+
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: nose
-spec: 
-  workplaces:
+spec:
+  workspaces:
     - name: source
   params:
     - name: args
-      decription: Arguments to pass to nose
-      type: string
-      default: "-v"
+      description: Arguments to pass to nose
+      type: array
+      default: ["-v"]
   steps:
     - name: nosetests
       image: python:3.9-slim
       workingDir: $(workspaces.source.path)
       script: |
-         set -e
-          python -m pip install --upgrade pip wheel
-          pip install -r requirements.txt
-          nosetests $(params.args)
+        set -e
+        python -m pip install --upgrade pip wheel
+        pip install -r requirements.txt
+        nosetests $(params.args)
